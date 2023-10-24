@@ -7,5 +7,3 @@ GROUP BY cus.first_name, cus.last_name, ord.order_date
 HAVING COUNT(*) >= 2 AND ord.order_date BETWEEN '2023-07-17' AND '2023-10-17'
 
 ORDER BY 1, 2
-
-![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/d410e183-854b-4357-bd63-3d1bb1a98c0d)
