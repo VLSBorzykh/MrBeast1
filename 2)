@@ -1,5 +1,9 @@
 SELECT AVG(ord.quantity) AS average, prd.category FROM orders ord
+
 JOIN products prd ON prd.product_id = ord.product_id
+
 WHERE price >= 50
+
 GROUP BY prd.category
+
 ORDER BY 2
