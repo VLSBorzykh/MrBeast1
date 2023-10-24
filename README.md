@@ -149,3 +149,89 @@ WHERE quantity > (
     FROM Orders
 );
 ```
+
+# # 24/10
+
+# 1
+```
+SELECT p.id AS p_id, COUNT(pv.id) AS count_of_visits FROM person p
+JOIN person_visits pv ON pv.person_id = p.id
+GROUP BY 1
+ORDER BY p_id ASC, count_of_visits DESC
+```
+![image](https://github.com/VLSBorzykh/MrBeast1/assets/148325138/30090502-96c3-4e44-aec5-562dada22310)
+
+# 2
+```
+SELECT p.name, COUNT(pv.id) AS count_of_visits FROM person p
+JOIN person_visits pv ON pv.person_id = p.id
+GROUP BY 1
+ORDER BY count_of_visits DESC
+LIMIT 4
+```
+![image](https://github.com/VLSBorzykh/MrBeast1/assets/148325138/ac244ee2-fc9b-4b49-a469-5c461e8f6ab1)
+
+# 3
+```
+WITH fav_rest_visit AS (
+	SELECT pzz.name, COUNT(pv.id) AS count_of_visits FROM pizzeria pzz
+	JOIN person_visits pv ON pv.pizzeria_id = pzz.id
+	GROUP BY 1
+	ORDER BY count_of_visits DESC
+	LIMIT 3
+), fav_rest_order AS (
+	SELECT pzz.name, COUNT(pd.id) AS count_of_orders FROM pizzeria pzz
+	JOIN menu ON menu.pizzeria_id = pzz.id
+	JOIN person_order pd ON pd.menu_id = menu.id
+	GROUP BY 1
+	ORDER BY count_of_orders DESC
+	LIMIT 3
+)
+
+SELECT fro.name, count_of_orders AS count, ('order') AS action_type FROM fav_rest_order fro
+UNION
+SELECT frv.name, count_of_visits AS count, ('visit') AS action_type FROM fav_rest_visit frv
+ORDER BY 3 ASC, 2 DESC
+```
+![image](https://github.com/VLSBorzykh/MrBeast1/assets/148325138/d0df7615-4b8d-4895-b659-4afceb478f8c)
+
+# 4
+```
+WITH fav_rest_visit AS (
+	SELECT pzz.name, COUNT(pv.id) AS count_of_visits FROM pizzeria pzz
+	JOIN person_visits pv ON pv.pizzeria_id = pzz.id
+	GROUP BY 1
+	ORDER BY count_of_visits DESC
+), fav_rest_order AS (
+	SELECT pzz.name, COUNT(pd.id) AS count_of_orders FROM pizzeria pzz
+	JOIN menu ON menu.pizzeria_id = pzz.id
+	JOIN person_order pd ON pd.menu_id = menu.id
+	GROUP BY 1
+	ORDER BY count_of_orders DESC
+)
+
+SELECT frv.name, (frv.count_of_visits + fro.count_of_orders) AS total_count FROM fav_rest_visit frv
+JOIN fav_rest_order fro ON fro.name = frv.name
+```
+![image](https://github.com/VLSBorzykh/MrBeast1/assets/148325138/0f23571a-3ab3-4b4b-ba61-668582348909)
+
+# 5
+```
+SELECT p.name, COUNT(pv.id) AS count_of_visits FROM person p
+JOIN person_visits pv ON pv.person_id = p.id
+GROUP BY 1
+HAVING COUNT(pv.id) > 3
+```
+![image](https://github.com/VLSBorzykh/MrBeast1/assets/148325138/e6d08e44-d14f-4efc-96a7-609fa38320c6)
+
+# 6
+```
+SELECT DISTINCT p.name FROM person p
+LEFT JOIN person_order pd ON pd.person_id = p.id
+ORDER BY 1
+```
+![image](https://github.com/VLSBorzykh/MrBeast1/assets/148325138/794c283d-fc2c-426c-b7e6-2ca183fee997)
+
+# 7
+```
+
