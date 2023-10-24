@@ -1,0 +1,25 @@
+-- WORK IN PROGRESS
+
+
+WITH customer_max_min AS (
+
+SELECT ord.customer_id, MAX(ord.order_date) AS max_date, MIN(ord.order_date) AS min_date FROM orders ord
+
+GROUP BY ord.customer_id
+
+), range_max_min AS(
+
+SELECT cusxn.customer_id, (cusxn.max_date - cusxn.min_date) AS range FROM customer_max_min cusxn
+
+)
+
+
+SELECT cus.first_name, cus.last_name, MAX(ord.order_date), MAX(ord.order_date), MAX(rgxn.range) FROM orders ord
+
+JOIN range_max_min rgxn ON rgxn.customer_id = ord.customer_id
+
+JOIN customers cus ON cus.customer_id = ord.customer_id
+
+GROUP BY cus.first_name, cus.last_name
+
+HAVING (SELECT MAX(rgxn.range) FROM range_max_min rgxn)
