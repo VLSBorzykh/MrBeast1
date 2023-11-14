@@ -19,3 +19,4 @@ FROM balance b
 SELECT *, volume * last_rate_to_usd::float AS total_volume_in_usd
 FROM n_t
 ORDER BY name DESC, lastname, type
+
